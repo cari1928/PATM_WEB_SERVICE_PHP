@@ -9,15 +9,8 @@ $app = new \Slim\App;
 //necesario para que se queden los 'use'
 $app->get('/api/empleados', function (Request $request, Response $response) {
   try {
-    $web = new SlimApp;
-    $web->conexion();
-
-    $empleados = array();
-    $query     = "SELECT * FROM empleado";
-    $statement = $web->conn->Prepare($query);
-    $statement->Execute();
-    $empleados = $statement->FetchAll(PDO::FETCH_ASSOC);
-    $web       = null;
+    $web       = new Empleado;
+    $empleados = $web->getListadoE();
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
@@ -31,17 +24,10 @@ $app->get('/api/empleados', function (Request $request, Response $response) {
 //GET SINGLE EMPLEADO
 $app->get('/api/empleados/{id}', function (Request $request, Response $response) {
   try {
-    $id = $request->getAttribute('id');
-
-    $web = new SlimApp;
-    $web->conexion();
-
-    $query     = "SELECT * FROM empleado WHERE id=" . $id;
-    $empleado  = array();
-    $statement = $web->conn->Prepare($query);
-    $statement->Execute();
-    $empleado = $statement->FetchAll(PDO::FETCH_ASSOC);
-    $web      = null;
+    $id  = $request->getAttribute('id');
+    $web = new Empleado;
+    $web->setId($id);
+    $empleado = $web->getEmpleado();
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
@@ -68,15 +54,13 @@ $app->post('/api/empleados/add', function (Request $request, Response $response)
     );
     //llave foranea pendiente!!!
 
-    $web = new SlimApp;
-    $web->conexion();
-
-    $web->setTabla('empleado');
-    $web->insert($datos);
+    $web = new Empleado;
+    $web->setDatos($datos);
+    $empleado = $web->insEmpleado();
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
-      ->write('{"notice" : {"text" : "Empleado Added"}}');
+      ->write(json_encode($empleado));
 
   } catch (PDOException $e) {
     echo '{"error" : {"text" : ' . $e->getMessage() . '}}';
@@ -101,15 +85,13 @@ $app->put('/api/empleados/update', function (Request $request, Response $respons
     );
     //llave foranea pendiente!!!
 
-    $web = new SlimApp;
-    $web->conexion();
-
-    $web->setTabla('empleado');
-    $web->update($datos, array('id' => $id));
+    $web = new Empleado;
+    $web->setDatos($datos);
+    $empleado = $web->updEmpleado();
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
-      ->write('{"notice" : {"text" : "Empleado Updated"}}');
+      ->write(json_encode($empleado));
 
   } catch (PDOException $e) {
     echo '{"error" : {"text" : ' . $e->getMessage() . '}}';

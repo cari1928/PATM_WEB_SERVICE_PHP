@@ -1,6 +1,6 @@
 <?php
 
-include 'src/config/config.php';
+include 'config/config.php';
 
 /**
  *
@@ -75,6 +75,19 @@ class SlimApp
       //separa por comas
     }
     return $columnas;
+  }
+
+  /**
+   * METHOD TO GET AN ASSOCIATIVE ARRAY WITH THE INFORMATION OF A QUERY
+   * @param  String $query QUERY SQL
+   * @return [type]        [description]
+   */
+  public function fetchAll($query)
+  {
+    $statement = $this->conn->Prepare($query);
+    $statement->Execute();
+    $datos = $statement->FetchAll(PDO::FETCH_ASSOC);
+    return $datos;
   }
 
   /**
@@ -167,6 +180,8 @@ class SlimApp
   }
 
 }
+
+include 'model/empleado.php';
 
 $web = new SlimApp;
 $web->conexion();
