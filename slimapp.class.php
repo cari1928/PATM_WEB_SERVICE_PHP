@@ -195,6 +195,7 @@ include 'model/empleado.php';
 include 'model/local.php';
 include 'model/proveedor.php';
 include 'model/puesto.php';
+include 'model/servicio.php';
 
 $web = new SlimApp;
 $web->conexion();

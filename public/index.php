@@ -10,5 +10,6 @@ require "../controller/WSEmpleado.php";
 require "../controller/WSLocal.php";
 require "../controller/WSProveedor.php";
 require "../controller/WSPuesto.php";
+require "../controller/WSServicio.php";
 
 $app->run();
