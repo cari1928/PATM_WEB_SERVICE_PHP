@@ -81,8 +81,8 @@ class Local_Servicio extends SlimApp
     $local_servicio = $this->fetchAll($query);
 
     if (!isset($local_servicio[0])) {
-      // return array('notice' => array('text' => "No existe el local_servicio especificado"));
-      return array('local' => $this->id_local, 'servicio' => $this->id_servicio);
+      return array('notice' => array('text' => "No existe el local_servicio especificado"));
+      // return array('local' => $this->id_local, 'servicio' => $this->id_servicio);
     }
 
     $local    = new Local;

@@ -4,11 +4,11 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
- * GET ALL LOCALES Y SERVICIOS
+ * GET ALL LOCALES Y TIENDAS
  */
-$app->get('/api/locser/listado', function (Request $request, Response $response) {
+$app->get('/api/renta/listado', function (Request $request, Response $response) {
   try {
-    $web     = new Local_Servicio;
+    $web     = new Renta;
     $locales = $web->getListadoL();
 
     return $response->withStatus(200)
@@ -21,22 +21,22 @@ $app->get('/api/locser/listado', function (Request $request, Response $response)
 });
 
 /**
- * GET SINGLE LOCALES-SERVICIO
+ * GET SINGLE RENTA
  */
-$app->get('/api/locser/{idLoc}/{idSer}',
+$app->get('/api/renta/{idLoc}/{idTie}',
   function (Request $request, Response $response) {
     try {
       $idLoc = $request->getAttribute('idLoc');
-      $idSer = $request->getAttribute('idSer');
+      $idTie = $request->getAttribute('idTie');
 
-      $web = new Local_Servicio;
+      $web = new Renta;
       $web->setIdLocal($idLoc);
-      $web->setIdServicio($idSer);
-      $locser = $web->getLocServicio();
+      $web->setIdTienda($idTie);
+      $renta = $web->getRenta();
 
       return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write(json_encode($locser));
+        ->write(json_encode($renta));
 
     } catch (PDOException $e) {
       echo '{"error" : {"text" : ' . $e->getMessage() . '}}';
@@ -44,18 +44,18 @@ $app->get('/api/locser/{idLoc}/{idSer}',
   });
 
 /**
- * POST ADD LOCALES-SERVICIO
+ * POST ADD RENTA
  */
-$app->post('/api/locser/add', function (Request $request, Response $response) {
+$app->post('/api/renta/add', function (Request $request, Response $response) {
   try {
-    $web = new Local_Servicio;
+    $web = new Renta;
     $web->setIdLocal($request->getParam('id_local'));
-    $web->setIdServicio($request->getParam('id_servicio'));
-    $locser = $web->insLocServicio();
+    $web->setIdTienda($request->getParam('id_tienda'));
+    $renta = $web->insRenta();
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
-      ->write(json_encode($locser));
+      ->write(json_encode($renta));
 
   } catch (PDOException $e) {
     echo '{"error" : {"text" : ' . $e->getMessage() . '}}';
@@ -63,32 +63,32 @@ $app->post('/api/locser/add', function (Request $request, Response $response) {
 });
 
 /**
- * PUT UPDATE LOCALES-SERVICIO
+ * PUT UPDATE RENTA
  */
-$app->put('/api/locser/update/{idLoc}/{idSer}',
+$app->put('/api/renta/update/{idLoc}/{idTie}',
   function (Request $request, Response $response) {
     try {
       //llaves
       $idLoc = $request->getAttribute('idLoc');
-      $idSer = $request->getAttribute('idSer');
+      $idTie = $request->getAttribute('idTie');
 
       //datos a cambiar
       $datos = array(
-        'id_local'    => $request->getParam('id_local'),
-        'id_servicio' => $request->getParam('id_servicio'),
+        'id_local'  => $request->getParam('id_local'),
+        'id_tienda' => $request->getParam('id_tienda'),
       );
 
-      $web = new Local_Servicio;
+      $web = new Renta;
       //especifica llaves
       $web->setIdLocal($idLoc);
-      $web->setIdServicio($idSer);
+      $web->setIdTienda($idTie);
       //especifica datos
       $web->setDatos($datos);
-      $locser = $web->updLocServicio();
+      $renta = $web->updRenta();
 
       return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write(json_encode($locser));
+        ->write(json_encode($renta));
 
     } catch (PDOException $e) {
       echo '{"error" : {"text" : ' . $e->getMessage() . '}}';
@@ -96,19 +96,19 @@ $app->put('/api/locser/update/{idLoc}/{idSer}',
   });
 
 /**
- * DELETE LOCALES-SERVICIO
+ * DELETE RENTA
  */
-$app->delete('/api/locser/delete/{idLoc}/{idSer}',
+$app->delete('/api/renta/delete/{idLoc}/{idTie}',
   function (Request $request, Response $response) {
     try {
       $idLoc = $request->getAttribute('idLoc');
-      $idSer = $request->getAttribute('idSer');
+      $idTie = $request->getAttribute('idTie');
 
-      $web = new Local_Servicio;
+      $web = new Renta;
       $web->conexion();
       $web->setIdLocal($idLoc);
-      $web->setIdServicio($idSer);
-      $web->delLocServicio();
+      $web->setIdTienda($idTie);
+      $web->delRenta();
 
       return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')

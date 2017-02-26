@@ -204,6 +204,7 @@ include 'model/servicio.php';
 include 'model/tienda.php';
 include 'model/acceso_proveedor.php';
 include 'model/local_servicio.php';
+include 'model/renta.php';
 
 $web = new SlimApp;
 $web->conexion();

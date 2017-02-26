@@ -14,5 +14,6 @@ require "../controller/WSServicio.php";
 require "../controller/WSTienda.php";
 require "../controller/WSAccesoProveedor.php";
 require "../controller/WSLocalServicio.php";
+require "../controller/WSRenta.php";
 
 $app->run();
