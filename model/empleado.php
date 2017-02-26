@@ -23,6 +23,10 @@ class Empleado extends SlimApp
     $this->datos = $datos;
   }
 
+  /**
+   * LISTADO DE EMPLEADOS
+   * @return array
+   */
   public function getListadoE()
   {
     $this->conexion();
@@ -31,6 +35,10 @@ class Empleado extends SlimApp
     return $this->fetchAll($query);
   }
 
+  /**
+   * OBTIENE UN EMPLEADO
+   * @return array
+   */
   public function getEmpleado()
   {
     $this->conexion();
@@ -39,6 +47,10 @@ class Empleado extends SlimApp
     return $this->fetchAll($query);
   }
 
+  /**
+   * INSERTA UN EMPLEADO
+   * @return array
+   */
   public function insEmpleado()
   {
     $this->conexion();
@@ -47,12 +59,26 @@ class Empleado extends SlimApp
     return $this->datos;
   }
 
+  /**
+   * ACTUALIZA UN EMPLEADO
+   * @return array
+   */
   public function updEmpleado()
   {
     $this->conexion();
     $this->setTabla('empleado');
     $this->update($this->datos, array('id' => $this->datos['id']));
     return $this->datos;
+  }
+
+  /**
+   * ELIMINA UN EMPLEADO
+   */
+  public function delEmpleado()
+  {
+    $this->conexion();
+    $this->setTabla('empleado');
+    $this->delete(array('id' => $this->id));
   }
 
 }

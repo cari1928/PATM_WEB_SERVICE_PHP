@@ -5,8 +5,10 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 
 $app = new \Slim\App;
 
-//GET ALL EMPLEADOS
-//necesario para que se queden los 'use'
+/**
+ * GET ALL EMPLEADOS
+ * necesario para que se queden los 'use'
+ */
 $app->get('/api/empleados', function (Request $request, Response $response) {
   try {
     $web       = new Empleado;
@@ -21,7 +23,9 @@ $app->get('/api/empleados', function (Request $request, Response $response) {
   }
 });
 
-//GET SINGLE EMPLEADO
+/**
+ * GET SINGLE EMPLEADO
+ */
 $app->get('/api/empleados/{id}', function (Request $request, Response $response) {
   try {
     $id  = $request->getAttribute('id');
@@ -38,7 +42,9 @@ $app->get('/api/empleados/{id}', function (Request $request, Response $response)
   }
 });
 
-//POST ADD EMPLEADO
+/**
+ * POST ADD EMPLEADO
+ */
 $app->post('/api/empleados/add', function (Request $request, Response $response) {
   try {
     $datos = array(
@@ -67,7 +73,9 @@ $app->post('/api/empleados/add', function (Request $request, Response $response)
   }
 });
 
-//PUT UPDATE EMPLEADO
+/**
+ * PUT UPDATE EMPLEADO
+ */
 $app->put('/api/empleados/update', function (Request $request, Response $response) {
   try {
     $id    = $request->getParam('id');
@@ -98,20 +106,21 @@ $app->put('/api/empleados/update', function (Request $request, Response $respons
   }
 });
 
-//DELETE EMPLEADO
+/**
+ * DELETE EMPLEADO
+ */
 $app->delete('/api/empleados/delete/{id}', function (Request $request, Response $response) {
   try {
     $id = $request->getAttribute('id');
 
-    $web = new SlimApp;
+    $web = new Empleado;
     $web->conexion();
-
-    $web->setTabla('empleado');
-    $web->delete(array('id' => $id));
+    $web->setId($id);
+    $web->delEmpleado();
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
-      ->write('{"notice" : {"text" : "Empleado Deleted"}}');
+      ->write('{"notice" : {"text" : "Eliminado"}}');
 
   } catch (PDOException $e) {
     echo '{"error" : {"text" : ' . $e->getMessage() . '}}';
