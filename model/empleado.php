@@ -8,11 +8,17 @@ class Empleado extends SlimApp
   private $id    = null;
   private $datos = array(); //especificar array para que funcione
 
+  /**
+   * GETTERS
+   */
   public function getId()
   {
     return $this->id;
   }
 
+  /**
+   * SETTERS
+   */
   public function setId($id)
   {
     $this->id = $id;

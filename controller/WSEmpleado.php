@@ -3,13 +3,11 @@
 use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 
-$app = new \Slim\App;
-
 /**
  * GET ALL EMPLEADOS
  * necesario para que se queden los 'use'
  */
-$app->get('/api/empleados', function (Request $request, Response $response) {
+$app->get('/api/empleado/listado', function (Request $request, Response $response) {
   try {
     $web       = new Empleado;
     $empleados = $web->getListadoE();
@@ -26,7 +24,7 @@ $app->get('/api/empleados', function (Request $request, Response $response) {
 /**
  * GET SINGLE EMPLEADO
  */
-$app->get('/api/empleados/{id}', function (Request $request, Response $response) {
+$app->get('/api/empleado/{id}', function (Request $request, Response $response) {
   try {
     $id  = $request->getAttribute('id');
     $web = new Empleado;
@@ -45,7 +43,7 @@ $app->get('/api/empleados/{id}', function (Request $request, Response $response)
 /**
  * POST ADD EMPLEADO
  */
-$app->post('/api/empleados/add', function (Request $request, Response $response) {
+$app->post('/api/empleado/add', function (Request $request, Response $response) {
   try {
     $datos = array(
       'nombre'     => $request->getParam('nombre'),
@@ -76,7 +74,7 @@ $app->post('/api/empleados/add', function (Request $request, Response $response)
 /**
  * PUT UPDATE EMPLEADO
  */
-$app->put('/api/empleados/update', function (Request $request, Response $response) {
+$app->put('/api/empleado/update', function (Request $request, Response $response) {
   try {
     $id    = $request->getParam('id');
     $datos = array(
@@ -109,7 +107,7 @@ $app->put('/api/empleados/update', function (Request $request, Response $respons
 /**
  * DELETE EMPLEADO
  */
-$app->delete('/api/empleados/delete/{id}', function (Request $request, Response $response) {
+$app->delete('/api/empleado/delete/{id}', function (Request $request, Response $response) {
   try {
     $id = $request->getAttribute('id');
 

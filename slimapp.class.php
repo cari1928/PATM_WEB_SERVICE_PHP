@@ -182,6 +182,7 @@ class SlimApp
 }
 
 include 'model/empleado.php';
+include 'model/local.php';
 
 $web = new SlimApp;
 $web->conexion();
