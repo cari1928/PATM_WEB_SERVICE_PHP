@@ -9,5 +9,6 @@ $app = new \Slim\App;
 require "../controller/WSEmpleado.php";
 require "../controller/WSLocal.php";
 require "../controller/WSProveedor.php";
+require "../controller/WSPuesto.php";
 
 $app->run();

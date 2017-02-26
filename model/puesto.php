@@ -33,7 +33,7 @@ class Puesto extends SlimApp
    * LISTADO DE PUESTOS
    * @return array
    */
-  public function getListadoE()
+  public function getListadoP()
   {
     $this->conexion();
 
