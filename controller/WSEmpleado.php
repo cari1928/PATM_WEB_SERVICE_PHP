@@ -57,7 +57,6 @@ $app->post('/api/empleado/add', function (Request $request, Response $response) 
       'genero'     => $request->getParam('genero'),
       'id_puesto'  => $request->getParam('id_puesto'),
     );
-    //llave foranea pendiente!!!
 
     $web = new Empleado;
     $web->setDatos($datos);
@@ -91,7 +90,6 @@ $app->put('/api/empleado/update', function (Request $request, Response $response
       'genero'     => $request->getParam('genero'),
       'id_puesto'  => $request->getParam('id_puesto'),
     );
-    //llave foranea pendiente!!!
 
     $web = new Empleado;
     $web->setDatos($datos);

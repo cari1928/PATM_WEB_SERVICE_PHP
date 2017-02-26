@@ -136,10 +136,15 @@ class SlimApp
       }
     }
 
-    $sql  = "update " . $this->getTabla() . " set " . $columnas . $where;
+    $sql = "update " . $this->getTabla() . " set " . $columnas . $where;
+
+    // echo $sql . "<br>";
+
     $stmt = $this->conn->prepare($sql);
     for ($i = 0; $i < sizeof($nombresColumnas); $i++) {
       $stmt->bindParam(':' . $nombresColumnas[$i], $datos[$nombresColumnas[$i]]);
+
+      // echo $nombresColumnas[$i] . " " . $datos[$nombresColumnas[$i]] . "<br>";
     }
 
     $stmt->execute();
@@ -197,6 +202,7 @@ include 'model/proveedor.php';
 include 'model/puesto.php';
 include 'model/servicio.php';
 include 'model/tienda.php';
+include 'model/acceso_proveedor.php';
 
 $web = new SlimApp;
 $web->conexion();
