@@ -203,6 +203,7 @@ include 'model/puesto.php';
 include 'model/servicio.php';
 include 'model/tienda.php';
 include 'model/acceso_proveedor.php';
+include 'model/local_servicio.php';
 
 $web = new SlimApp;
 $web->conexion();
