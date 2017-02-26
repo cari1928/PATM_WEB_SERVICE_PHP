@@ -55,6 +55,7 @@ $app->post('/api/empleado/add', function (Request $request, Response $response) 
       'tel_casa'   => $request->getParam('tel_casa'),
       'tel_cel'    => $request->getParam('tel_cel'),
       'genero'     => $request->getParam('genero'),
+      'id_puesto'  => $request->getParam('id_puesto'),
     );
     //llave foranea pendiente!!!
 
@@ -88,6 +89,7 @@ $app->put('/api/empleado/update', function (Request $request, Response $response
       'tel_casa'   => $request->getParam('tel_casa'),
       'tel_cel'    => $request->getParam('tel_cel'),
       'genero'     => $request->getParam('genero'),
+      'id_puesto'  => $request->getParam('id_puesto'),
     );
     //llave foranea pendiente!!!
 
