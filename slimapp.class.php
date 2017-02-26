@@ -179,11 +179,22 @@ class SlimApp
     $stmt->execute();
   }
 
+  /**
+   * FACILITA EL MANEJO DE FALLAS
+   * @param  array
+   */
+  public function debug($elements)
+  {
+    echo "<pre>";
+    print_r($elements);
+  }
+
 }
 
 include 'model/empleado.php';
 include 'model/local.php';
 include 'model/proveedor.php';
+include 'model/puesto.php';
 
 $web = new SlimApp;
 $web->conexion();

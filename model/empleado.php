@@ -37,8 +37,17 @@ class Empleado extends SlimApp
   {
     $this->conexion();
 
-    $query = "SELECT * FROM empleado";
-    return $this->fetchAll($query);
+    $query     = "SELECT * FROM empleado";
+    $empleados = $this->fetchAll($query);
+
+    for ($i = 0; $i < sizeof($empleados); $i++) {
+      $puesto = new Puesto;
+      $puesto->setId($empleados[$i]['id_puesto']);
+      $empleados[$i]['puesto'] = $puesto->getPuesto();
+      unset($empleados[$i]['id_puesto']);
+    }
+
+    return $empleados;
   }
 
   /**
@@ -49,8 +58,19 @@ class Empleado extends SlimApp
   {
     $this->conexion();
 
-    $query = "SELECT * FROM empleado WHERE id=" . $this->id;
-    return $this->fetchAll($query);
+    $query    = "SELECT * FROM empleado WHERE id=" . $this->id;
+    $empleado = $this->fetchAll($query);
+
+    if (!isset($empleado[0])) {
+      return array('notice' => array('text' => "No existe el empleado especificado"));
+    }
+
+    $puesto = new Puesto;
+    $puesto->setId($empleado[0]['id_puesto']);
+    $empleado[0]['puesto'] = $puesto->getPuesto();
+    unset($empleado[0]['id_puesto']);
+
+    return $empleado;
   }
 
   /**
