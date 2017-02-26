@@ -3,6 +3,22 @@
 use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 
+$configuration = [
+  'settings' => [
+    'displayErrorDetails' => true,
+  ],
+];
+$c   = new \Slim\Container($configuration);
+$app = new \Slim\App($c);
+
+$app->add(new \Slim\Middleware\HttpBasicAuthentication([
+  "path"   => "/api/empleado/listado",
+  "secure" => false,
+  "users"  => [
+    "root" => "****",
+  ],
+]));
+
 /**
  * GET ALL EMPLEADOS
  * necesario para que se queden los 'use'
@@ -12,7 +28,7 @@ $app->get('/api/empleado/listado', function (Request $request, Response $respons
     $web       = new Empleado;
     $empleados = $web->getListadoE();
 
-    return $response->withStatus(200)
+    return $response
       ->withHeader('Content-Type', 'application/json')
       ->write(json_encode($empleados));
 
@@ -25,6 +41,7 @@ $app->get('/api/empleado/listado', function (Request $request, Response $respons
  * GET SINGLE EMPLEADO
  */
 $app->get('/api/empleado/{id}', function (Request $request, Response $response) {
+
   try {
     $id  = $request->getAttribute('id');
     $web = new Empleado;
