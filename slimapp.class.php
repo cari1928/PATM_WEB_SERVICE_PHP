@@ -104,10 +104,13 @@ class SlimApp
     $sql = "insert into " . $this->getTabla() . " (" . $columnas[0] . ") values(" . $columnas[1] . ")";
 
     $stmt = $this->conn->prepare($sql);
+    // $cadena = "";
     for ($i = 0; $i < sizeof($nombresColumnas); $i++) {
       $stmt->bindParam(':' . $nombresColumnas[$i], $datos[$nombresColumnas[$i]]);
+      // $cadena .= ':' . $nombresColumnas[$i]." ". $datos[$nombresColumnas[$i]]." ";
     }
     $stmt->execute();
+    // return $sql." ".$cadena;
   }
 
   /**
@@ -205,6 +208,8 @@ include 'model/tienda.php';
 include 'model/acceso_proveedor.php';
 include 'model/local_servicio.php';
 include 'model/renta.php';
+include 'model/usuario.php';
+include 'model/bitacora.php';
 
 $web = new SlimApp;
 $web->conexion();
