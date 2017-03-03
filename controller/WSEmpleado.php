@@ -3,22 +3,6 @@
 use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 
-$configuration = [
-  'settings' => [
-    'displayErrorDetails' => true,
-  ],
-];
-$c   = new \Slim\Container($configuration);
-$app = new \Slim\App($c);
-
-$app->add(new \Slim\Middleware\HttpBasicAuthentication([
-  "path"   => "/api/empleado/listado",
-  "secure" => false,
-  "users"  => [
-    "root" => "****",
-  ],
-]));
-
 /**
  * GET ALL EMPLEADOS
  * necesario para que se queden los 'use'

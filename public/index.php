@@ -3,7 +3,22 @@
 require '../vendor/autoload.php';
 require '../slimapp.class.php';
 
-$app = new \Slim\App;
+$configuration = [
+  'settings' => [
+    'displayErrorDetails' => true,
+  ],
+];
+$c   = new \Slim\Container($configuration);
+$app = new \Slim\App($c);
+
+//funciona!!!
+$app->add(new \Slim\Middleware\HttpBasicAuthentication([
+  "path"   => "/api",
+  "secure" => false,
+  "users"  => [
+    "root" => "root",
+  ],
+]));
 
 //routes
 require "../controller/WSEmpleado.php";
