@@ -6,10 +6,18 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 /**
  * GET ALL ACCESOS
  */
-$app->get('/api/acceso/listado', function (Request $request, Response $response) {
+$app->get('/api/acceso/listado/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
-    $web     = new Acceso_Proveedor;
-    $accesos = $web->getListadoA();
+    $bitacora = new Bitacora;
+    $bitacora->setUsuario($request->getAttribute('nomUsr'));
+    $bitacora->setPass($request->getAttribute('pass'));
+    $bitacora->setToken($request->getAttribute('token'));
+
+    $accesos = array('status'=>"No se pudo obtener la lista");
+    if($bitacora->validaToken()) {
+      $web     = new Acceso_Proveedor;
+      $accesos = $web->getListadoA();
+    }
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
@@ -21,18 +29,26 @@ $app->get('/api/acceso/listado', function (Request $request, Response $response)
 });
 
 /**
- * GET SINGLE EMPLEADO
+ * GET SINGLE ACCESO - PROVEEDOR
  */
-$app->get('/api/acceso/{idTie}/{idPro}',
+$app->get('/api/acceso/{idTie}/{idPro}/{nomUsr}/{pass}/{token}',
   function (Request $request, Response $response) {
     try {
-      $idTie = $request->getAttribute('idTie');
-      $idPro = $request->getAttribute('idPro');
+      $bitacora = new Bitacora;
+      $bitacora->setUsuario($request->getAttribute('nomUsr'));
+      $bitacora->setPass($request->getAttribute('pass'));
+      $bitacora->setToken($request->getAttribute('token'));
 
-      $web = new Acceso_Proveedor;
-      $web->setIdTienda($idTie);
-      $web->setIdProveedor($idPro);
-      $acceso = $web->getAccProveedor();
+      $acceso = array('status'=>"No se pudo obtener el acceso-proveedor");
+      if($bitacora->validaToken()) {
+        $idTie = $request->getAttribute('idTie');
+        $idPro = $request->getAttribute('idPro');
+
+        $web = new Acceso_Proveedor;
+        $web->setIdTienda($idTie);
+        $web->setIdProveedor($idPro);
+        $acceso = $web->getAccProveedor();
+      }
 
       return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
@@ -44,14 +60,22 @@ $app->get('/api/acceso/{idTie}/{idPro}',
   });
 
 /**
- * POST ADD EMPLEADO
+ * POST ADD ACCESO - PROVEEDOR
  */
-$app->post('/api/acceso/add', function (Request $request, Response $response) {
+$app->post('/api/acceso/add/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
-    $web = new Acceso_Proveedor;
-    $web->setIdTienda($request->getParam('id_tienda'));
-    $web->setIdProveedor($request->getParam('id_proveedor'));
-    $acceso = $web->insAccProveedor();
+    $bitacora = new Bitacora;
+    $bitacora->setUsuario($request->getAttribute('nomUsr'));
+    $bitacora->setPass($request->getAttribute('pass'));
+    $bitacora->setToken($request->getAttribute('token'));
+
+    $acceso = array('status'=>"No se pudo añadir");
+    if($bitacora->validaToken()) {
+      $web = new Acceso_Proveedor;
+      $web->setIdTienda($request->getParam('id_tienda'));
+      $web->setIdProveedor($request->getParam('id_proveedor'));
+      $acceso = $web->insAccProveedor();
+    }
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
@@ -63,28 +87,36 @@ $app->post('/api/acceso/add', function (Request $request, Response $response) {
 });
 
 /**
- * PUT UPDATE EMPLEADO
+ * PUT UPDATE ACCESO - PROVEEDOR
  */
-$app->put('/api/acceso/update/{idTie}/{idPro}',
+$app->put('/api/acceso/update/{idTie}/{idPro}/{nomUsr}/{pass}/{token}',
   function (Request $request, Response $response) {
     try {
-      //llaves
-      $idTien = $request->getAttribute('idTie');
-      $idPro  = $request->getAttribute('idPro');
+      $bitacora = new Bitacora;
+      $bitacora->setUsuario($request->getAttribute('nomUsr'));
+      $bitacora->setPass($request->getAttribute('pass'));
+      $bitacora->setToken($request->getAttribute('token'));
 
-      //datos a cambiar
-      $datos = array(
-        'id_tienda'    => $request->getParam('id_tienda'),
-        'id_proveedor' => $request->getParam('id_proveedor'),
-      );
+      $acceso = array('status'=>"No se pudo actualizar");
+      if($bitacora->validaToken()) {
+        //llaves
+        $idTien = $request->getAttribute('idTie');
+        $idPro  = $request->getAttribute('idPro');
 
-      $web = new Acceso_Proveedor;
-      //especifica llaves
-      $web->setIdTienda($idTien);
-      $web->setIdProveedor($idPro);
-      //especifica datos
-      $web->setDatos($datos);
-      $acceso = $web->updAccProveedor();
+        //datos a cambiar
+        $datos = array(
+          'id_tienda'    => $request->getParam('id_tienda'),
+          'id_proveedor' => $request->getParam('id_proveedor'),
+        );
+
+        $web = new Acceso_Proveedor;
+        //especifica llaves
+        $web->setIdTienda($idTien);
+        $web->setIdProveedor($idPro);
+        //especifica datos
+        $web->setDatos($datos);
+        $acceso = $web->updAccProveedor();
+      }
 
       return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
@@ -96,23 +128,32 @@ $app->put('/api/acceso/update/{idTie}/{idPro}',
   });
 
 /**
- * DELETE EMPLEADO
+ * DELETE ACCESO - PROVEEDOR
  */
-$app->delete('/api/acceso/delete/{idTie}/{idPro}',
+$app->delete('/api/acceso/delete/{idTie}/{idPro}/{nomUsr}/{pass}/{token}',
   function (Request $request, Response $response) {
     try {
-      $idTien = $request->getAttribute('idTie');
-      $idPro  = $request->getAttribute('idPro');
+      $bitacora = new Bitacora;
+      $bitacora->setUsuario($request->getAttribute('nomUsr'));
+      $bitacora->setPass($request->getAttribute('pass'));
+      $bitacora->setToken($request->getAttribute('token'));
 
-      $web = new Acceso_Proveedor;
-      $web->conexion();
-      $web->setIdTienda($idTien);
-      $web->setIdProveedor($idPro);
-      $web->delAccProveedor();
+      $acceso = array('status'=>"No se pudo eliminar");
+      if($bitacora->validaToken()) {
+        $idTien = $request->getAttribute('idTie');
+        $idPro  = $request->getAttribute('idPro');
+
+        $web = new Acceso_Proveedor;
+        $web->conexion();
+        $web->setIdTienda($idTien);
+        $web->setIdProveedor($idPro);
+        $web->delAccProveedor();
+        $acceso = array('status'=>'Eliminado');
+      }
 
       return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write('{"notice" : {"text" : "Eliminado"}}');
+        ->write(json_encode($acceso));
 
     } catch (PDOException $e) {
       echo '{"error" : {"text" : ' . $e->getMessage() . '}}';

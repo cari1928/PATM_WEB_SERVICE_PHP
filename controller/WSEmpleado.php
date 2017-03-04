@@ -10,7 +10,6 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 $app->get('/api/empleado/listado/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
     $bitacora = new Bitacora;
-    //se obtienen los parámetros
     $bitacora->setUsuario($request->getAttribute('nomUsr'));
     $bitacora->setPass($request->getAttribute('pass'));
     $bitacora->setToken($request->getAttribute('token'));
