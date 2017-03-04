@@ -7,10 +7,19 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
  * GET ALL EMPLEADOS
  * necesario para que se queden los 'use'
  */
-$app->get('/api/empleado/listado', function (Request $request, Response $response) {
+$app->get('/api/empleado/listado/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
-    $web       = new Empleado;
-    $empleados = $web->getListadoE();
+    $bitacora = new Bitacora;
+    //se obtienen los parámetros
+    $bitacora->setUsuario($request->getAttribute('nomUsr'));
+    $bitacora->setPass($request->getAttribute('pass'));
+    $bitacora->setToken($request->getAttribute('token'));
+
+    $empleados = array('status'=>"No se pudo obtener la lista");
+    if($bitacora->validaToken()) {
+      $web       = new Empleado;
+      $empleados = $web->getListadoE();
+    }
 
     return $response
       ->withHeader('Content-Type', 'application/json')

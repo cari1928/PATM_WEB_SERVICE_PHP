@@ -2,7 +2,7 @@
 
 class Bitacora extends SlimApp
 {
-  private $nombre    = null;
+  private $usuario    = null;
   private $pass    = null;
   private $token    = null;
   private $datos = array(); //especificar array para que funcione
@@ -10,38 +10,16 @@ class Bitacora extends SlimApp
   /**
    * GETTERS
    */
-  public function getNombre()
+  public function getUsuario()
   {
-    return $this->nombre;
-  }
+    return $this->usuario;
+  } 
 
-  /**
-   * SETTERS
-   */
-  public function setNombre($nombre)
-  {
-    $this->nombre = $nombre;
-  }
-
-  /**
-   * GETTERS
-   */
   public function getPass()
   {
     return $this->pass;
   }
 
-  /**
-   * SETTERS
-   */
-  public function setPass($pass)
-  {
-    $this->pass = $pass;
-  }
-
-  /**
-   * GETTERS
-   */
   public function getToken()
   {
     return $this->token;
@@ -50,20 +28,34 @@ class Bitacora extends SlimApp
   /**
    * SETTERS
    */
-  public function setToken($token)
-  {
-    $this->token = $token;
-  }
-
   public function setDatos($datos)
   {
     $this->datos = $datos;
   }
 
+  public function setUsuario($usuario)
+  {
+    $this->usuario = $usuario;
+  }
+
+  public function setPass($pass)
+  {
+    $this->pass = $pass;
+  }
+
+  public function setToken($token)
+  {
+    $this->token = $token;
+  }
+
 /**
  * FUNCIONES
  */
-
+  
+  /**
+   * Inserción en Bitácora
+   * @return array Datos insertados
+   */
   public function insAcceso()
   {
     $this->conexion();
@@ -72,14 +64,21 @@ class Bitacora extends SlimApp
     return $this->datos;
   }
 
-  public function validaToken() {
+  /**
+   * Verifica que el token ingresado esté dentro del límite de tiempo
+   * @return boolean Token válido o no, válido=true
+   */
+  public function validaToken() 
+  {
     $this->conexion();
 
   	$query = "SELECT * FROM bitacora 
-  	WHERE usuario='".$this->usuario."' AND password='".$this->password."' 
-  	AND token='".$this->token."' and NOW() BETWEEN fecini and fecfin";
-  	$valida = $this->fetchAll($query);
+    WHERE usuario='".$this->usuario."' 
+    AND password='".$this->pass."' 
+    AND token='".$this->token."' 
+    AND NOW() BETWEEN fecini and fecfin";
 
+  	$valida = $this->fetchAll($query);
   	if(isset($valida[0])) {
   		return true;
   	}

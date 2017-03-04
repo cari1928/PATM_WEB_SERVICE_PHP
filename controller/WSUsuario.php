@@ -9,7 +9,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
  */
 $app->get('/api/usuario/validar/{nombre}/{pass}', function (Request $request, Response $response) {
   try {
-  	$nombre  = $request->getAttribute('nombre');
+  	$nombre  = 	$request->getAttribute('nombre');
   	$pass  = $request->getAttribute('pass');
 
     $web       = new Usuario;
