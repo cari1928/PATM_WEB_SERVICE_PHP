@@ -6,10 +6,18 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 /**
  * GET ALL PROVEEDORES
  */
-$app->get('/api/proveedor/listado', function (Request $request, Response $response) {
+$app->get('/api/proveedor/listado/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
-    $web         = new Proveedor;
-    $proveedores = $web->getListadoP();
+    $bitacora = new Bitacora;
+    $bitacora->setUsuario($request->getAttribute('nomUsr'));
+    $bitacora->setPass($request->getAttribute('pass'));
+    $bitacora->setToken($request->getAttribute('token'));
+
+    $proveedores = array('status'=>"No se pudo obtener la lista");
+    if($bitacora->validaToken()) {
+      $web         = new Proveedor;
+      $proveedores = $web->getListadoP();
+    }
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
@@ -23,12 +31,20 @@ $app->get('/api/proveedor/listado', function (Request $request, Response $respon
 /**
  * GET SINGLE PROVEEDOR
  */
-$app->get('/api/proveedor/{id}', function (Request $request, Response $response) {
+$app->get('/api/proveedor/{id}/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
-    $id  = $request->getAttribute('id');
-    $web = new Proveedor;
-    $web->setId($id);
-    $proveedor = $web->getProveedor();
+    $bitacora = new Bitacora;
+    $bitacora->setUsuario($request->getAttribute('nomUsr'));
+    $bitacora->setPass($request->getAttribute('pass'));
+    $bitacora->setToken($request->getAttribute('token'));
+
+    $proveedor = array('status'=>"No se pudo obtener el proveedor");
+    if($bitacora->validaToken()) {
+      $id  = $request->getAttribute('id');
+      $web = new Proveedor;
+      $web->setId($id);
+      $proveedor = $web->getProveedor();
+    }
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
@@ -42,19 +58,26 @@ $app->get('/api/proveedor/{id}', function (Request $request, Response $response)
 /**
  * POST ADD EMPLEADO
  */
-$app->post('/api/proveedor/add', function (Request $request, Response $response) {
+$app->post('/api/proveedor/add/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
-    $datos = array(
-      'nombre'   => $request->getParam('nombre'),
-      'rfc'      => $request->getParam('rfc'),
-      'correo'   => $request->getParam('correo'),
-      'telefono' => $request->getParam('telefono'),
-    );
-    //llave foranea pendiente!!!
+    $bitacora = new Bitacora;
+    $bitacora->setUsuario($request->getAttribute('nomUsr'));
+    $bitacora->setPass($request->getAttribute('pass'));
+    $bitacora->setToken($request->getAttribute('token'));
 
-    $web = new Proveedor;
-    $web->setDatos($datos);
-    $proveedor = $web->insProveedor();
+    $proveedor = array('status'=>"No se pudo añadir");
+    if($bitacora->validaToken()) {
+      $datos = array(
+        'nombre'   => $request->getParam('nombre'),
+        'rfc'      => $request->getParam('rfc'),
+        'correo'   => $request->getParam('correo'),
+        'telefono' => $request->getParam('telefono'),
+      );
+
+      $web = new Proveedor;
+      $web->setDatos($datos);
+      $proveedor = $web->insProveedor();
+    }
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
@@ -68,21 +91,28 @@ $app->post('/api/proveedor/add', function (Request $request, Response $response)
 /**
  * PUT UPDATE EMPLEADO
  */
-$app->put('/api/proveedor/update', function (Request $request, Response $response) {
+$app->put('/api/proveedor/update/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
-    $id    = $request->getParam('id');
-    $datos = array(
-      'id'       => $id,
-      'nombre'   => $request->getParam('nombre'),
-      'rfc'      => $request->getParam('rfc'),
-      'correo'   => $request->getParam('correo'),
-      'telefono' => $request->getParam('telefono'),
-    );
-    //llave foranea pendiente!!!
+    $bitacora = new Bitacora;
+    $bitacora->setUsuario($request->getAttribute('nomUsr'));
+    $bitacora->setPass($request->getAttribute('pass'));
+    $bitacora->setToken($request->getAttribute('token'));
 
-    $web = new Proveedor;
-    $web->setDatos($datos);
-    $proveedor = $web->updProveedor();
+    $proveedor = array('status'=>"No se pudo actualizar");
+    if($bitacora->validaToken()) {
+      $id    = $request->getParam('id');
+      $datos = array(
+        'id'       => $id,
+        'nombre'   => $request->getParam('nombre'),
+        'rfc'      => $request->getParam('rfc'),
+        'correo'   => $request->getParam('correo'),
+        'telefono' => $request->getParam('telefono'),
+      );
+
+      $web = new Proveedor;
+      $web->setDatos($datos);
+      $proveedor = $web->updProveedor();
+    }
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
@@ -96,18 +126,26 @@ $app->put('/api/proveedor/update', function (Request $request, Response $respons
 /**
  * DELETE EMPLEADO
  */
-$app->delete('/api/proveedor/delete/{id}', function (Request $request, Response $response) {
+$app->delete('/api/proveedor/delete/{id}/{nomUsr}/{pass}/{token}', function (Request $request, Response $response) {
   try {
-    $id = $request->getAttribute('id');
+    $bitacora = new Bitacora;
+    $bitacora->setUsuario($request->getAttribute('nomUsr'));
+    $bitacora->setPass($request->getAttribute('pass'));
+    $bitacora->setToken($request->getAttribute('token'));
 
-    $web = new Proveedor;
-    $web->conexion();
-    $web->setId($id);
-    $web->delProveedor();
+    $proveedor = array('status'=>"No se pudo eliminar");
+    if($bitacora->validaToken()) {
+      $id = $request->getAttribute('id');
+      $web = new Proveedor;
+      $web->conexion();
+      $web->setId($id);
+      $web->delProveedor();
+      $proveedor = array('status'=>"Eliminado");
+    }
 
     return $response->withStatus(200)
       ->withHeader('Content-Type', 'application/json')
-      ->write('{"notice" : {"text" : "Eliminado"}}');
+      ->write(json_encode($proveedor));
 
   } catch (PDOException $e) {
     echo '{"error" : {"text" : ' . $e->getMessage() . '}}';
